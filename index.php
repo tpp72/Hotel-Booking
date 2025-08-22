@@ -144,6 +144,7 @@
           <option value="Standard">Standard</option>
           <option value="Deluxe">Deluxe</option>
           <option value="Suite">Suite</option>
+          <option value="Penthouse">Penthouse</option>
         </select>
       </div>
 

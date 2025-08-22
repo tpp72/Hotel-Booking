@@ -16,10 +16,10 @@
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="cms_users_show.php">Users</a></li>
-        <li class="nav-item"><a class="nav-link" href="#booking">Bookings</a></li>
-        <li class="nav-item"><a class="nav-link" href="https://www.instagram.com/tpp_72/">Rooms</a></li>
-        <li class="nav-item"><a class="nav-link" href="cms.php">Roomtypes</a></li>
-        <li class="nav-item"><a class="nav-link" href="logout.php">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="cms_bookings_show.php">Bookings</a></li>
+        <li class="nav-item"><a class="nav-link" href="cms_rooms_show.php">Rooms</a></li>
+        <li class="nav-item"><a class="nav-link" href="cms_roomtypes_show.php">Roomtypes</a></li>
+        <li class="nav-item"><a class="nav-link" href="cms_services_show.php">Services</a></li>
       </ul>
     </div>
   </div>
@@ -29,8 +29,8 @@
 <header>
     <form method="post" action="">
         <div class="container">
-            <h2 class="text-center text-dark">Database Management System</h2>
-            <p class="text-center text-dark">ระบบจัดการฐานข้อมูล </p>
+            <h2 class="text-center text-dark">Content Management System</h2>
+            <p class="text-center text-dark">ระบบจัดการและแก้ไขเนื้อหาบนเว็บไซต์ </p>
             <select class="form-select mb-3" name="options" id="options">
                 <option>ข้อมูลผู้ใช้</option>
                 <option>ข้อมูลการจองห้องพัก</option>

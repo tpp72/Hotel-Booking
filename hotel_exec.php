@@ -102,13 +102,14 @@
     }
 
     $sql = "INSERT INTO bookings (user_id, room_id, check_in, check_out, status, booking_services) 
-            VALUES ('$user_id', '$room_id', '$check_in', '$check_out', 'pending', '$booking_services')";
+            VALUES ('$user_id', '$room_id', '$check_in', '$check_out', 'available', '$booking_services')";
     
     if ($conn->query($sql) === TRUE) {
         $booking_id = $conn->insert_id;
 
         // อัพเดทสถานะห้อง
         $conn->query("UPDATE rooms SET status='booked' WHERE room_id='$room_id'");
+        $conn->query("UPDATE bookings SET status='booked' WHERE room_id='$room_id'");
 
         echo "<br><center>จองห้องพักเรียบร้อย</center>";
         echo "<br><center>กรุณารอสักครู่...</center>";
