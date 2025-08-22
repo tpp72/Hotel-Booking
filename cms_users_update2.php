@@ -16,17 +16,17 @@
     $sql.= " WHERE md5(user_id) = '".$val."'";
     $result = $conn->query($sql);
     while($result_array = $result->fetch_assoc()) {
-        $user_id = $result_array['user_id'] ?? '';
-        $first_name = $result_array['first_name'] ?? '';
-        $last_name = $result_array['last_name'] ?? '';
-        $email = $result_array['email'] ?? '';
-        $password = $result_array['password'] ?? '';
-        $phone = $result_array['phone'] ?? '';
+        $user_id      = $result_array['user_id'] ?? '';
+        $first_name   = $result_array['first_name'] ?? '';
+        $last_name    = $result_array['last_name'] ?? '';
+        $email        = $result_array['email'] ?? '';
+        $password     = $result_array['password'] ?? '';
+        $phone        = $result_array['phone'] ?? '';
     }
 ?>
 
   <div class="container mt-3">
-    <form class="row g-3" name="cms_users_update" id="cms_users_update" method="post" action="cms_exec.php" enctype="multipart/form-data">
+    <form class="row g-3" name="cms_users_update" id="cms_users_update" method="get" action="cms_exec.php" enctype="multipart/form-data">
         <h2 class="text-center mb-4">แก้ไขข้อมูลผู้ใช้</h2>
         <div>
             <input type="hidden" name="user_id" id="user_id" value="<?php echo $user_id;?>">
@@ -57,6 +57,6 @@
             <button type="submit" name="submit" id="submit" class="btn btn-success">บันทึกข้อมูล</button>
         </div>
     </form>
-  </div>
+</div>
 </body>
-</form>
+</html>

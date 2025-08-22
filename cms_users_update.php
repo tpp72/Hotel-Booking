@@ -9,14 +9,14 @@
 </head>
 
 <body>
-<form class="row g-3" method="post" action="">
+<form class="row g-3" method="get" action="">
     <div class="container mt-5">
         <h2 class="text-center mb-4">แก้ไขข้อมูลผู้ใช้</h2>
         <div class="d-flex justify-content-center mb-4">
             <input class="form-control w-25" type="text" name="search" id="search" placeholder="ค้นหาข้อมูลผู้ใช้">
         </div>
         <div class="col-12 text-center mb-4">
-            <input type="hidden" name="chk" id="chk" value="ค้นหา">
+            <input type="hidden" name="users_chk" id="users_chk" value="ค้นหา">
             <button type="submit" class="btn btn-success">ค้นหา</button>
         </div>
     </div>
@@ -26,9 +26,9 @@
     include 'conn.php';
     $sql = "SELECT * FROM users";
 
-    $search = isset($_POST['search']) ? $_POST['search'] : '';
+    $search = isset($_GET['search']) ? $_GET['search'] : '';
     if($search <> ''){
-        $sql.= " WHERE user_id LIKE '%".$search."%'";
+        $sql.= " WHERE user_id LIKE '%".$search."%' OR first_name LIKE '%".$search."%' OR last_name LIKE '%".$search."%' OR email LIKE '%".$search."%' OR phone LIKE '%".$search."%'";
     }
     $sql.= " ORDER BY user_id ASC";
 

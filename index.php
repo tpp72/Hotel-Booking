@@ -108,25 +108,25 @@
       <div class="col-md-6">
         <label class="form-label">ชื่อ</label>
         <input class="form-control" type="text" name="first_name" id="first_name" 
-               value="<?php echo $_SESSION['first_name'] ?>" placeholder="ชื่อจริง" required>
+               value="<?php echo isset ($_SESSION['first_name']) ? $_SESSION['first_name'] : ''; ?>" placeholder="ชื่อจริง" required>
       </div>
 
       <div class="col-md-6">
         <label class="form-label">นามสกุล</label>
         <input class="form-control" type="text" name="last_name" id="last_name" 
-               value="<?php echo $_SESSION['last_name'] ?>" placeholder="นามสกุล" required>
+               value="<?php echo isset ($_SESSION['last_name']) ? $_SESSION['last_name'] : ''; ?>" placeholder="นามสกุล" required>
       </div>
 
       <div class="col-md-6">
         <label class="form-label">อีเมล</label>
         <input class="form-control" type="email" name="email" id="email" 
-               value="<?php echo $_SESSION['email'] ?>" placeholder="อีเมล" required>
+               value="<?php echo isset ($_SESSION['email']) ? $_SESSION['email'] : ''; ?>" placeholder="อีเมล" required>
       </div>
 
       <div class="col-md-6">
         <label class="form-label">เบอร์โทร</label>
         <input class="form-control" type="tel" name="phone" id="phone" 
-               value="<?php echo $_SESSION['phone'] ?>" placeholder="เบอร์โทรศัพท์" required>
+               value="<?php echo isset ($_SESSION['phone']) ? $_SESSION['phone'] : ''; ?>" placeholder="เบอร์โทรศัพท์" required>
       </div>
 
       <div class="col-md-6">

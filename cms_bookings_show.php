@@ -16,10 +16,10 @@
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="cms_users_show.php">Users</a></li>
-        <li class="nav-item"><a class="nav-link" href="#booking">Bookings</a></li>
-        <li class="nav-item"><a class="nav-link" href="https://www.instagram.com/tpp_72/">Rooms</a></li>
-        <li class="nav-item"><a class="nav-link" href="cms.php">Roomtypes</a></li>
-        <li class="nav-item"><a class="nav-link" href="logout.php">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="cms_bookings_show.php">Bookings</a></li>
+        <li class="nav-item"><a class="nav-link" href="cms_rooms_show.php">Rooms</a></li>
+        <li class="nav-item"><a class="nav-link" href="cms_roomtypes_show.php">Roomtypes</a></li>
+        <li class="nav-item"><a class="nav-link" href="cms_services_show.php">Services</a></li>
       </ul>
     </div>
   </div>
@@ -50,35 +50,44 @@
 <?php
     include 'conn.php';
     $sql = "SELECT * FROM bookings";
+    $sql.= " INNER JOIN booking_services ON bookings.booking_id = booking_services.booking_id"; 
+    $sql.= " INNER JOIN services ON booking_services.service_id = services.service_id";
+    $sql.= " INNER JOIN users ON bookings.user_id = users.user_id";
+    $sql.= " INNER JOIN rooms ON bookings.room_id = rooms.room_id";
+    $sql.= " INNER JOIN roomtypes ON rooms.type_id = roomtypes.type_id";
 
     $search = isset($_POST['search']) ? $_POST['search'] : '';
     if($search <> ''){
-        $sql.= " WHERE booking_id LIKE '%".$search."%'";
+        $sql.= " WHERE booking_id LIKE '%".$search."%' OR user_id LIKE '%".$search."%' OR room_id LIKE '%".$search."%' OR check_in LIKE '%".$search."%' OR check_out LIKE '%".$search."%'";
     }
-    $sql.= " ORDER BY user_id ASC";
+    $sql.= " ORDER BY users.user_id ASC";
 
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         echo "<table width='95%' border='0' align='center'>";
         echo "<tr bgcolor='green'>";
-        echo "<td width='5%'><center>รหัสการจอง</center></td>";
-        echo "<td width='5%'><center>รหัสผู้ใช้</center></td>";
-        echo "<td width='5%'><center>รหัสห้องพัก</center></td>";
-        echo "<td width='15%'><center>วันที่เช็คอิน</center></td>";
-        echo "<td width='15%'><center>วันที่เช็คเอาท์</center></td>";
-        echo "<td width='20%'><center>สถานะการจอง</center></td>";
-        echo "<td width='30%'><center>เซอร์วิส</center></td>";
+        echo "<td width='7%'><center>หมายเลขห้องพัก</center></td>";
+        echo "<td width='10%'><center>ชื่อผู้จอง</center></td>";
+        echo "<td width='10%'><center>นามสกุลผู้จอง</center></td>";
+        echo "<td width='12%'><center>อีเมลผู้จอง</center></td>";
+        echo "<td width='10%'><center>เบอร์โทรผู้จอง</center></td>";
+        echo "<td width='13%'><center>วันที่เช็คอิน</center></td>";
+        echo "<td width='13%'><center>วันที่เช็คเอาท์</center></td>";
+        echo "<td width='8%'><center>ประเภทห้องพัก</center></td>";
+        echo "<td width='18%'><center>เซอร์วิส</center></td>";
         echo "</tr>";
 
     while($result_array = $result->fetch_assoc()) {
         echo "<tr>";
-        echo "<td><center>".$result_array['booking_id']."</center></td>";
-        echo "<td><center>".$result_array['user_id']."</center></td>";
-        echo "<td><center>".$result_array['room_id']."</center></td>";
+        echo "<td><center>".$result_array['room_number']."</center></td>";
+        echo "<td><center>".$result_array['first_name']."</center></td>";
+        echo "<td><center>".$result_array['last_name']."</center></td>";
+        echo "<td><center>".$result_array['email']."</center></td>";
+        echo "<td><center>".$result_array['phone']."</center></td>";
         echo "<td><center>".$result_array['check_in']."</center></td>";
         echo "<td><center>".$result_array['check_out']."</center></td>";
-        echo "<td><center>".$result_array['status']."</td>";
-        echo "<td><center>".$result_array['booking_services']."</center></td>";
+        echo "<td><center>".$result_array['type_name']."</center></td>";
+        echo "<td><center>".$result_array['service_name']."</center></td>";
         echo  "</tr>";
     }
         echo "</table>";
