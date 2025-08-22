@@ -1,4 +1,5 @@
 <?php
+  include 'conn.php';
   session_start();
 ?>
 <!DOCTYPE html>
@@ -150,11 +151,16 @@
 
       <div class="col-md-6">
         <label class="form-label">Services</label>
-        <select multiple class="form-select" name="booking_services[]">
-          <option value="Breakfast Buffet">Breakfast Buffet</option>
-          <option value="Airport Shuttle">Airport Shuttle</option>
-          <option value="Spa & Massage">Spa & Massage</option>
-          <option value="Laundry">Laundry</option>
+        <select multiple class="form-select" name="services[]">
+          <?php
+            $sql = "SELECT service_id, service_name FROM services";
+            $result = $conn->query($sql);
+            if ($result && $result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<option value='{$row['service_id']}'>{$row['service_name']}</option>";
+                }
+            }
+          ?>
         </select>
       </div>
 

@@ -63,7 +63,7 @@
         $check_in     = isset ($_POST['check_in']) ? $_POST['check_in'] : '';
         $check_out    = isset ($_POST['check_out']) ? $_POST['check_out'] : '';
         $room_type    = isset ($_POST['room_type']) ? $_POST['room_type'] : '';
-        $booking_services = isset($_POST['booking_services']) ? implode(", ", $_POST['booking_services']) : '';
+        $services     = isset($_POST['services']) ? $_POST['services'] : [];
 
     // 1. หาว่ามี user อยู่หรือยัง
     $sql = "SELECT user_id FROM users WHERE email='$email' LIMIT 1";
@@ -90,8 +90,8 @@
             JOIN roomtypes t ON r.type_id=t.type_id 
             WHERE t.type_name='$room_type' AND r.status='available' 
             LIMIT 1";
-    $result = $conn->query($sql);
 
+    $result = $conn->query($sql);
     if ($result && $result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $room_id = $row['room_id'];
@@ -101,15 +101,21 @@
         echo "<meta http-equiv='refresh' content='3;url=index.php'>";
     }
 
-    $sql = "INSERT INTO bookings (user_id, room_id, check_in, check_out, status, booking_services) 
-            VALUES ('$user_id', '$room_id', '$check_in', '$check_out', 'available', '$booking_services')";
+    $sql = "INSERT INTO bookings (user_id, room_id, check_in, check_out, status) 
+            VALUES ('$user_id', '$room_id', '$check_in', '$check_out', 'available')";
     
     if ($conn->query($sql) === TRUE) {
         $booking_id = $conn->insert_id;
 
+        foreach ($services as $service_id) {
+            $sql = "INSERT INTO booking_services (booking_id, service_id) 
+                    VALUES ('$booking_id', '$service_id')";
+            $conn->query($sql);
+        }
+
         // อัพเดทสถานะห้อง
         $conn->query("UPDATE rooms SET status='booked' WHERE room_id='$room_id'");
-        $conn->query("UPDATE bookings SET status='booked' WHERE room_id='$room_id'");
+        $conn->query("UPDATE bookings SET status='booked' WHERE booking_id='$booking_id'");
 
         echo "<br><center>จองห้องพักเรียบร้อย</center>";
         echo "<br><center>กรุณารอสักครู่...</center>";
