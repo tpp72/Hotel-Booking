@@ -25,7 +25,7 @@
         <li class="nav-item"><a class="nav-link" href="#booking">Booking</a></li>
         <li class="nav-item"><a class="nav-link" href="https://www.instagram.com/tpp_72/" target="_blank">Contact</a></li>
         <?php if (isset($_SESSION['user_id'])): ?>
-          <li class="nav-item"><a class="nav-link" href="cms_show.php">Admin</a></li>
+          <li class="nav-item"><a class="nav-link" href="cms.php">Admin</a></li>
           <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
         <?php else: ?>
           <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>

@@ -4,19 +4,20 @@
     include 'conn.php';
 
     if (isset($_POST['chk']) && $_POST['chk'] == "login") {
-    $username = isset($_POST['username']) ? $_POST['username'] : '';
-    $password = isset($_POST['password']) ? $_POST['password'] : '';
+        $username = isset($_POST['username']) ? $_POST['username'] : '';
+        $password = isset($_POST['password']) ? $_POST['password'] : '';
 
     $sql = "SELECT * FROM users WHERE email = '".$username."' AND password = '".$password."'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         $result_array = $result->fetch_assoc();
-        $_SESSION['user_id'] = $result_array['user_id'];
+        $_SESSION['user_id']    = $result_array['user_id'];
         $_SESSION['first_name'] = $result_array['first_name'];
-        $_SESSION['last_name'] = $result_array['last_name'];
-        $_SESSION['email'] = $result_array['email'];
-        $_SESSION['phone'] = $result_array['phone'];
+        $_SESSION['last_name']  = $result_array['last_name'];
+        $_SESSION['email']      = $result_array['email'];
+        $_SESSION['phone']      = $result_array['phone'];
+
         echo "<br><center><h3>ยินดีต้อนรับคุณ ".$_SESSION['first_name']." ".$_SESSION['last_name']."</h3></center>";
         echo "<br><center><h3>กรุณารอสักครู่...</h3></center>";
         echo "<meta http-equiv='refresh' content='2;url=index.php'>";
@@ -31,11 +32,11 @@
 
     // register.php
     if (isset($_POST['chk']) && $_POST['chk'] == "register"){
-    $first_name   = isset($_POST['first_name']) ? $_POST['first_name'] : '';
-    $last_name    = isset($_POST['last_name']) ? $_POST['last_name'] : '';
-    $email        = isset($_POST['email']) ? $_POST['email'] : '';
-    $password     = isset($_POST['password']) ? $_POST['password'] : '';
-    $phone        = isset($_POST['phone']) ? $_POST['phone'] : '';
+        $first_name   = isset($_POST['first_name']) ? $_POST['first_name'] : '';
+        $last_name    = isset($_POST['last_name']) ? $_POST['last_name'] : '';
+        $email        = isset($_POST['email']) ? $_POST['email'] : '';
+        $password     = isset($_POST['password']) ? $_POST['password'] : '';
+        $phone        = isset($_POST['phone']) ? $_POST['phone'] : '';
 
     $sql = "INSERT INTO users(first_name , last_name , email , password , phone)";
     $sql.= " VALUES('$first_name','$last_name','$email','$password','$phone')";
@@ -55,14 +56,14 @@
 
     // Booking index.php
     if (isset($_POST['chk']) && $_POST['chk'] == "booking") {
-    $first_name = $_POST['first_name'];
-    $last_name  = $_POST['last_name'];
-    $email      = $_POST['email'];
-    $phone      = $_POST['phone'];
-    $check_in   = $_POST['check_in'];
-    $check_out  = $_POST['check_out'];
-    $room_type  = $_POST['room_type'];
-    $booking_services   = isset($_POST['booking_services']) ? implode(", ", $_POST['booking_services']) : '';
+        $first_name   = isset ($_POST['first_name']) ? $_POST['first_name'] : '';
+        $last_name    = isset ($_POST['last_name']) ? $_POST['last_name'] : '';
+        $email        = isset ($_POST['email']) ? $_POST['email'] : '';
+        $phone        = isset ($_POST['phone']) ? $_POST['phone'] : '';
+        $check_in     = isset ($_POST['check_in']) ? $_POST['check_in'] : '';
+        $check_out    = isset ($_POST['check_out']) ? $_POST['check_out'] : '';
+        $room_type    = isset ($_POST['room_type']) ? $_POST['room_type'] : '';
+        $booking_services = isset($_POST['booking_services']) ? implode(", ", $_POST['booking_services']) : '';
 
     // 1. หาว่ามี user อยู่หรือยัง
     $sql = "SELECT user_id FROM users WHERE email='$email' LIMIT 1";
@@ -106,7 +107,7 @@
     if ($conn->query($sql) === TRUE) {
         $booking_id = $conn->insert_id;
 
-        // 4. อัพเดทสถานะห้อง
+        // อัพเดทสถานะห้อง
         $conn->query("UPDATE rooms SET status='booked' WHERE room_id='$room_id'");
 
         echo "<br><center>จองห้องพักเรียบร้อย</center>";
