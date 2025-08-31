@@ -48,7 +48,7 @@
     }else{
         echo "<br><center><h3>สมัครสมาชิกไม่สำเร็จ</h3></center>";
         echo "<center><h3>กรุณาลองใหม่อีกครั้ง...</h3></center>";
-        echo "<meta http-equiv='refresh' content='2;url=hotel_register.php'>";
+        echo "<meta http-equiv='refresh' content='2;url=register.php'>";
     }
 
     $conn->close();
@@ -63,7 +63,7 @@
         $check_in     = isset ($_POST['check_in']) ? $_POST['check_in'] : '';
         $check_out    = isset ($_POST['check_out']) ? $_POST['check_out'] : '';
         $room_type    = isset ($_POST['room_type']) ? $_POST['room_type'] : '';
-        $services     = isset($_POST['services']) ? $_POST['services'] : [];
+        $service_id     = isset($_POST['service_id']) ? $_POST['service_id'] : [];
 
     // 1. หาว่ามี user อยู่หรือยัง
     $sql = "SELECT user_id FROM users WHERE email='$email' LIMIT 1";
@@ -74,9 +74,9 @@
         $user_id = $row['user_id'];
     }else{
         // ถ้าไม่มี → insert user ใหม่
-        $dummy_pass = '1234';
+        $default_pass = '1234';
         $sql = "INSERT INTO users(first_name,last_name,email,phone,password) 
-                VALUES ('$first_name','$last_name','$email','$phone','$dummy_pass')";
+                VALUES ('$first_name','$last_name','$email','$phone','$default_pass')";
         if($conn->query($sql) === TRUE) {
             $user_id = $conn->insert_id;
         }else{
@@ -101,17 +101,11 @@
         echo "<meta http-equiv='refresh' content='3;url=index.php'>";
     }
 
-    $sql = "INSERT INTO bookings (user_id, room_id, check_in, check_out, status) 
-            VALUES ('$user_id', '$room_id', '$check_in', '$check_out', 'available')";
-    
+    $sql = "INSERT INTO bookings (user_id, room_id, service_id, check_in, check_out, status) 
+            VALUES ('$user_id', '$room_id', '$service_id', '$check_in', '$check_out', 'available')";
+
     if ($conn->query($sql) === TRUE) {
         $booking_id = $conn->insert_id;
-
-        foreach ($services as $service_id) {
-            $sql = "INSERT INTO booking_services (booking_id, service_id) 
-                    VALUES ('$booking_id', '$service_id')";
-            $conn->query($sql);
-        }
 
         // อัพเดทสถานะห้อง
         $conn->query("UPDATE rooms SET status='booked' WHERE room_id='$room_id'");
@@ -124,7 +118,7 @@
     } else {
         echo "<br><center><h3>ไม่สามารถจองได้: " . $conn->error . "</h3></center>";
         echo "<center><h3>กรุณาลองใหม่อีกครั้ง...</h3></center>";
-        echo "<meta http-equiv='refresh' content='3;url=hotel_register.php'>";
+        echo "<meta http-equiv='refresh' content='3;url=register.php'>";
 
     }
 

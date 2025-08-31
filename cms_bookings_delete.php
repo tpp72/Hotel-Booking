@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CS Hotel :: แสดงข้อมูลการจองห้องพัก</title>
+  <title>CS Hotel :: ลบข้อมูลการจองห้องพัก</title>
   <link rel="icon" type="image/png" href="./img/logo.png">
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
   <div class="container">
     <a class="navbar-brand fw-bold" href="cms.php">ADMIN</a>
     <div class="collapse navbar-collapse">
@@ -26,27 +26,18 @@
 </nav>
 
 <body class="d-flex flex-column min-vh-100">
-<header>
-    <form method="post" action="">
-        <div class="container">
-            <h2 class="text-center text-dark">จัดการข้อมูลการจองห้องพัก</h2>
-            <p class="text-center text-dark">กรุณาเลือกการดำเนินการที่ต้องการ</p>
-            <div class="text-center mb-4">
-                <a href="cms_bookings_insert.php" class="btn btn-primary">เพิ่มข้อมูลการจองห้องพัก</a>
-                <a href="cms_bookings_update.php" class="btn btn-secondary">แก้ไขข้อมูลการจองห้องพัก</a>
-                <a href="cms_bookings_delete.php" class="btn btn-danger">ลบข้อมูลการจองห้องพัก</a>
-            </div>
-            <div class="d-flex justify-content-center mb-3">
-                <input class="form-control w-75 text-center" type="text" name="search" id="search" placeholder="ค้นหาข้อมูลการจองห้องพัก">
-            </div>
-            <div class="col-12 text-center">
-                <input type="hidden" name="chk" id="chk" value="ค้นหา">
-                <button type="submit" class="btn btn-success">ค้นหา</button>
-            </div>
+  <form class="row g-3" method="get" action="">
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">ลบข้อมูลการจองห้องพัก</h2>
+        <div class="d-flex justify-content-center mb-4">
+            <input class="form-control w-25" type="text" name="search" id="search" placeholder="ค้นหาข้อมูลการจองห้องพัก">
         </div>
-    </form>
-</header>
-
+        <div class="col-12 text-center mb-4">
+            <input type="hidden" name="chk" id="chk" value="ค้นหา">
+            <button type="submit" class="btn btn-success">ค้นหา</button>
+        </div>
+    </div>
+  </form>
 <?php
     include 'conn.php';
     $sql = "SELECT * FROM bookings";
@@ -55,7 +46,7 @@
     $sql.= " INNER JOIN roomtypes ON rooms.type_id = roomtypes.type_id";
     $sql.= " LEFT JOIN services ON bookings.service_id = services.service_id";
 
-    $search = isset($_POST['search']) ? $_POST['search'] : '';
+    $search = isset($_GET['search']) ? $_GET['search'] : '';
     if($search <> ''){
         $sql.= " WHERE booking_id LIKE '%".$search."%' OR user_id LIKE '%".$search."%' OR room_id LIKE '%".$search."%' OR check_in LIKE '%".$search."%' OR check_out LIKE '%".$search."%'";
     }
@@ -75,6 +66,7 @@
         echo "<td width='8%'><center>ประเภทห้องพัก</center></td>";
         echo "<td width='12%'><center>เซอร์วิส</center></td>";
         echo "<td width='7%'><center>สถานะห้องพัก</center></td>";
+        echo "<td width='5%'><center>ลบ</center></td>";
         echo "</tr>";
 
     while($result_array = $result->fetch_assoc()) {
@@ -89,6 +81,7 @@
         echo "<td><center>".$result_array['type_name']."</center></td>";
         echo "<td><center>".$result_array['service_name']."</center></td>";
         echo "<td><center>".$result_array['status']."</center></td>";
+        echo "<td><center><a href='cms_exec.php?val=".md5($result_array['booking_id'])."&bookings_chk=delete' target='_self' onclick='return confirm(\"ยืนยันการลบข้อมูล\")' role='button' class='btn btn-danger'>ลบ</a></center></td>";
         echo  "</tr>";
     }
         echo "</table>";

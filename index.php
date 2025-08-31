@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CS Hotel :: หน้าแรก</title>
   <link rel="icon" type="image/png" href="./img/logo.png">
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
 
@@ -91,10 +91,10 @@
   <div class="container">
     <h2 class="text-center mb-4">Our Services</h2>
     <div class="row text-center g-4">
-      <div class="col-md-3 col-6"><h5>🍳 Breakfast Buffet</h5><p>฿250</p></div>
-      <div class="col-md-3 col-6"><h5>🚐 Airport Shuttle</h5><p>฿500</p></div>
-      <div class="col-md-3 col-6"><h5>💆 Spa & Massage</h5><p>฿1,200</p></div>
-      <div class="col-md-3 col-6"><h5>👕 Laundry</h5><p>฿100</p></div>
+      <div class="col-md-3 col-3"><h5>🍳 Breakfast Buffet</h5><p>฿250</p></div>
+      <div class="col-md-3 col-3"><h5>🚐 Airport Shuttle</h5><p>฿500</p></div>
+      <div class="col-md-3 col-3"><h5>💆 Spa & Massage</h5><p>฿1,200</p></div>
+      <div class="col-md-3 col-3"><h5>👕 Laundry</h5><p>฿100</p></div>
     </div>
   </div>
 </section>
@@ -145,25 +145,24 @@
           <option value="Standard">Standard</option>
           <option value="Deluxe">Deluxe</option>
           <option value="Suite">Suite</option>
-          <option value="Penthouse">Penthouse</option>
         </select>
       </div>
 
       <div class="col-md-6">
         <label class="form-label">Services</label>
-        <select multiple class="form-select" name="services[]">
-          <?php
-            $sql = "SELECT service_id, service_name FROM services";
-            $result = $conn->query($sql);
-            if ($result && $result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<option value='{$row['service_id']}'>{$row['service_name']}</option>";
+        <select class="form-select" name="service_id" id="service_id">
+          <option value="">-- ไม่เอาบริการเสริม --</option>
+            <?php
+                $sql = "SELECT service_id, service_name FROM services";
+                $result = $conn->query($sql);
+              if ($result && $result->num_rows > 0) {
+              while ($row = $result->fetch_assoc()) {
+                echo "<option value='{$row['service_id']}'>{$row['service_name']}</option>";
                 }
-            }
-          ?>
+              }
+            ?>
         </select>
       </div>
-
       <div class="col-12 text-center">
         <input type="hidden" name="chk" id="chk" value="booking">
         <button type="submit" class="btn btn-success">จองห้องพัก</button>
@@ -177,7 +176,7 @@
 <!-- Footer -->
 <footer id="contact" class="bg-dark text-white text-center py-4">
   <div class="container">
-    <p class="mb-0">&copy; 2025 MyHotel. All rights reserved.</p>
+    <p class="mb-0">&copy; 2025 CS Hotel. All rights reserved.</p>
   </div>
 </footer>
 </html>

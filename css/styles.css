@@ -7,6 +7,7 @@
       color: white;
       text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
     }
+    
     .card img {
       height: 200px;
       object-fit: cover;

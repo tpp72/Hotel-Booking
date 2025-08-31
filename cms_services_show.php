@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CS Hotel :: แสดงข้อมูลบริการเสริม</title>
   <link rel="icon" type="image/png" href="./img/logo.png">
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/styles.css">
 </head>
 
 <!-- Navbar -->
@@ -19,13 +19,13 @@
         <li class="nav-item"><a class="nav-link" href="cms_bookings_show.php">Bookings</a></li>
         <li class="nav-item"><a class="nav-link" href="cms_rooms_show.php">Rooms</a></li>
         <li class="nav-item"><a class="nav-link" href="cms_roomtypes_show.php">Roomtypes</a></li>
-        <li class="nav-item"><a class="nav-link" href="cms_services_show.php">Services</a></li>
+        <li class="nav-item"><a class="nav-link active" href="cms_services_show.php">Services</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 <header>
     <form method="post" action="">
         <div class="container">
@@ -81,4 +81,11 @@
     $conn->close();
 ?>
 </body>
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-4 mt-auto">
+  <div class="container">
+    <p class="mb-0">&copy; 2025 CS Hotel. All rights reserved.</p>
+  </div>
+</footer>
 </html>
