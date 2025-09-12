@@ -12,11 +12,8 @@
 
     if ($result->num_rows > 0) {
         $result_array = $result->fetch_assoc();
-        $_SESSION['user_id']    = $result_array['user_id'];
         $_SESSION['first_name'] = $result_array['first_name'];
         $_SESSION['last_name']  = $result_array['last_name'];
-        $_SESSION['email']      = $result_array['email'];
-        $_SESSION['phone']      = $result_array['phone'];
 
         echo "<br><center><h3>ยินดีต้อนรับคุณ ".$_SESSION['first_name']." ".$_SESSION['last_name']."</h3></center>";
         echo "<br><center><h3>กรุณารอสักครู่...</h3></center>";
