@@ -51,19 +51,25 @@
         </div>
         <div class="col-md-6">
             <label class="form-label">วันที่เช็คอิน</label>
-            <input class="form-control" type="date" name="check_in" id="check_in" required>
+            <input class="form-control" type="date" name="check_in" id="check_in" min="<?php echo $today; ?>" required>
         </div>
         <div class="col-md-6">
             <label class="form-label">วันที่เช็คเอาท์</label>
-            <input class="form-control" type="date" name="check_out" id="check_out" required>
+            <input class="form-control" type="date" name="check_out" id="check_out" min="<?php echo $today; ?>" required>
         </div>
         <div class="col-md-6">
             <label class="form-label">ประเภทห้องพัก</label>
-            <select class="form-select" name="room_type" required>
-                <option value="Standard">Standard</option>
-                <option value="Deluxe">Deluxe</option>
-                <option value="Suite">Suite</option>
-            </select>
+            <select class="form-select" name="room_type" id="room_type" required>
+            <?php
+                $sql = "SELECT type_id, type_name FROM roomtypes";
+                $result = $conn->query($sql);
+              if ($result && $result->num_rows > 0) {
+              while ($row = $result->fetch_assoc()) {
+                echo "<option value='{$row['type_id']}'>{$row['type_name']}</option>";
+                }
+              }
+            ?>
+        </select>
         </div>
         <div class="col-md-6">
             <label class="form-label col-md-6">บริการเสริม</label>

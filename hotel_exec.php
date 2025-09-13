@@ -65,6 +65,13 @@
         $room_type    = isset ($_POST['room_type']) ? $_POST['room_type'] : '';
         $service_id     = isset($_POST['service_id']) ? $_POST['service_id'] : [];
 
+    // ตรวจวันที่
+    if ($check_in == '' || $check_out == '' || $check_out <= $check_in) {
+        echo "<center><h3>กรุณาเลือกช่วงวันที่ให้ถูกต้อง</h3></center>";
+        echo "<meta http-equiv='refresh' content='2;url=index.php'>";
+        exit;
+    }
+
     // 1. หาว่ามี user อยู่หรือยัง
     $sql = "SELECT user_id FROM users WHERE email='$email' LIMIT 1";
 
@@ -88,7 +95,7 @@
     $sql = "SELECT r.room_id 
             FROM rooms r 
             JOIN roomtypes t ON r.type_id=t.type_id 
-            WHERE t.type_name='$room_type' AND r.status='available' 
+            WHERE t.type_id='$room_type' AND r.status='available' 
             LIMIT 1";
 
     $result = $conn->query($sql);

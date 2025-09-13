@@ -47,18 +47,31 @@
     if($page < 1) $page = 1;
     $offset = ($page - 1) * $limit;
 
-    $sql = "SELECT * FROM bookings";
-    $sql.= " INNER JOIN users ON bookings.user_id = users.user_id";
-    $sql.= " INNER JOIN rooms ON bookings.room_id = rooms.room_id";
-    $sql.= " INNER JOIN roomtypes ON rooms.type_id = roomtypes.type_id";
-    $sql.= " LEFT JOIN services ON bookings.service_id = services.service_id";
+    $sql = "SELECT b.*, u.first_name, u.last_name, u.email, u.phone, r.room_number, r.status, t.type_name, s.service_name FROM bookings AS b
+        INNER JOIN users     AS u ON b.user_id = u.user_id
+        INNER JOIN rooms     AS r ON b.room_id = r.room_id
+        INNER JOIN roomtypes AS t ON r.type_id = t.type_id
+        LEFT JOIN  services  AS s ON b.service_id = s.service_id";
 
     $search = isset($_GET['search']) ? $_GET['search'] : '';
     if($search <> ''){
-        $sql.= " WHERE booking_id LIKE '%".$search."%' OR user_id LIKE '%".$search."%' OR room_id LIKE '%".$search."%' OR check_in LIKE '%".$search."%' OR check_out LIKE '%".$search."%'";
+      $kw  = $conn->real_escape_string($search);
+      $sql .= " WHERE 
+        b.booking_id  LIKE '%$kw%' OR 
+        b.user_id     LIKE '%$kw%' OR 
+        b.room_id     LIKE '%$kw%' OR 
+        b.check_in    LIKE '%$kw%' OR 
+        b.check_out   LIKE '%$kw%' OR
+        r.room_number LIKE '%$kw%' OR
+        u.first_name  LIKE '%$kw%' OR
+        u.last_name   LIKE '%$kw%' OR
+        u.email       LIKE '%$kw%' OR
+        u.phone       LIKE '%$kw%' OR
+        t.type_name   LIKE '%$kw%' OR
+        s.service_name LIKE '%$kw%'";
     }
     $sql_count = $sql; // เอาไว้หาจำนวนทั้งหมด
-    $sql .= " ORDER BY booking_id ASC LIMIT $limit OFFSET $offset";
+    $sql .= " ORDER BY room_number ASC LIMIT $limit OFFSET $offset";
 
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
