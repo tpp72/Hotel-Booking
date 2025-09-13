@@ -6,12 +6,13 @@
   <title>CS Hotel :: ลบข้อมูลการจองห้องพัก</title>
   <link rel="icon" type="image/png" href="./img/logo.png">
   <link rel="stylesheet" href="./css/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="cms.php">ADMIN</a>
+    <a class="bi bi-gear navbar-brand fw-bold" href="cms.php"> ADMIN</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
@@ -40,6 +41,12 @@
   </form>
 <?php
     include 'conn.php';
+
+    $limit = 10; // จำนวนแถวต่อหน้า
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    if($page < 1) $page = 1;
+    $offset = ($page - 1) * $limit;
+
     $sql = "SELECT * FROM bookings";
     $sql.= " INNER JOIN users ON bookings.user_id = users.user_id";
     $sql.= " INNER JOIN rooms ON bookings.room_id = rooms.room_id";
@@ -50,24 +57,29 @@
     if($search <> ''){
         $sql.= " WHERE booking_id LIKE '%".$search."%' OR user_id LIKE '%".$search."%' OR room_id LIKE '%".$search."%' OR check_in LIKE '%".$search."%' OR check_out LIKE '%".$search."%'";
     }
-    $sql.= " ORDER BY booking_id ASC";
+    $sql_count = $sql; // เอาไว้หาจำนวนทั้งหมด
+    $sql .= " ORDER BY booking_id ASC LIMIT $limit OFFSET $offset";
 
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
-        echo "<table width='95%' border='0' align='center'>";
-        echo "<tr bgcolor='green'>";
-        echo "<td width='7%'><center>หมายเลขห้องพัก</center></td>";
-        echo "<td width='11%'><center>ชื่อ</center></td>";
-        echo "<td width='11%'><center>นามสกุล</center></td>";
-        echo "<td width='13%'><center>อีเมล</center></td>";
-        echo "<td width='7%'><center>เบอร์โทร</center></td>";
-        echo "<td width='9%'><center>วันที่เช็คอิน</center></td>";
-        echo "<td width='9%'><center>วันที่เช็คเอาท์</center></td>";
-        echo "<td width='8%'><center>ประเภทห้องพัก</center></td>";
-        echo "<td width='12%'><center>เซอร์วิส</center></td>";
-        echo "<td width='7%'><center>สถานะห้องพัก</center></td>";
-        echo "<td width='5%'><center>ลบ</center></td>";
-        echo "</tr>";
+        echo '<div class="table-responsive">';
+        echo '<table class="table table-striped table-hover align-middle table-users">';
+        echo '<thead class="table-danger">';
+        echo '  <tr>';
+        echo '    <th>หมายเลขห้องพัก</th>';
+        echo '    <th>ชื่อ</th>';
+        echo '    <th>นามสกุล</th>';
+        echo '    <th>อีเมล</th>';
+        echo '    <th>เบอร์โทร</th>';
+        echo '    <th>วันที่เช็คอิน</th>';
+        echo '    <th>วันที่เช็คเอาท์</th>';
+        echo '    <th>ประเภทห้องพัก</th>';
+        echo '    <th>เซอร์วิส</th>';
+        echo '    <th>สถานะห้องพัก</th>';
+        echo '    <th class="text-center">ลบ</th>';
+        echo '  </tr>';
+        echo '</thead>';
+        echo '<tbody>';
 
     while($result_array = $result->fetch_assoc()) {
         echo "<tr>";
@@ -81,13 +93,35 @@
         echo "<td><center>".$result_array['type_name']."</center></td>";
         echo "<td><center>".$result_array['service_name']."</center></td>";
         echo "<td><center>".$result_array['status']."</center></td>";
-        echo "<td><center><a href='cms_exec.php?val=".md5($result_array['booking_id'])."&bookings_chk=delete' target='_self' onclick='return confirm(\"ยืนยันการลบข้อมูล\")' role='button' class='btn btn-danger'>ลบ</a></center></td>";
+        echo "<td><center><a href='cms_exec.php?val=".md5($result_array['booking_id'])."&bookings_chk=delete' target='_self' onclick='return confirm(\"ยืนยันการลบข้อมูล\")' role='button' class='bi bi-trash btn btn-danger'></a></center></td>";
         echo  "</tr>";
     }
-        echo "</table>";
-    }else{
-        echo "<center>ไม่พบข้อมูล</center>";
-    }
+        echo '</tbody>';
+        echo '</table>';
+        echo '</div>';
+
+        // ---- นับจำนวนหน้า ----
+        $result_count = $conn->query($sql_count);
+        $total_records = $result_count->num_rows;
+        $total_pages = ceil($total_records / $limit);
+
+        // ---- แสดงลิงก์แบ่งหน้า ----
+        echo '<div class="container mt-auto">';
+        echo '<nav aria-label="Page navigation">';
+        echo '<ul class="pagination justify-content-center">';
+
+        for ($i = 1; $i <= $total_pages; $i++) {
+            $active = ($i == $page) ? ' active' : '';
+            echo '<li class="page-item'.$active.'"><a class="page-link" href="?page='.$i.'">'.$i.'</a></li>';
+        }
+
+        echo '</ul>';
+        echo '</nav>';
+        echo '</div>';
+
+      } else {
+        echo '<p class="text-center text-muted my-5">ไม่พบข้อมูล</p>';
+      }
 
     $conn->close();
 ?>

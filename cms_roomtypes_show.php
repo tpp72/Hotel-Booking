@@ -6,12 +6,13 @@
   <title>CS Hotel :: แสดงข้อมูลประเภทห้องพัก</title>
   <link rel="icon" type="image/png" href="./img/logo.png">
   <link rel="stylesheet" href="./css/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="cms.php">ADMIN</a>
+    <a class="bi bi-gear navbar-brand fw-bold" href="cms.php"> ADMIN</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
@@ -26,45 +27,54 @@
 </nav>
 
 <body class="d-flex flex-column min-vh-100">
-<header>
     <form method="post" action="">
         <div class="container">
             <h2 class="text-center text-dark">จัดการข้อมูลประเภทห้องพัก</h2>
             <p class="text-center text-dark">กรุณาเลือกการดำเนินการที่ต้องการ</p>
             <div class="text-center mb-4">
-                <a href="cms_roomtypes_insert.php" class="btn btn-primary">เพิ่มข้อมูลประเภทห้องพัก</a>
-                <a href="cms_roomtypes_update.php" class="btn btn-secondary">แก้ไขข้อมูลประเภทห้องพัก</a>
-                <a href="cms_roomtypes_delete.php" class="btn btn-danger">ลบข้อมูลประเภทห้องพัก</a>
+                <a href="cms_roomtypes_insert.php" class="bi bi-plus btn btn-primary"> เพิ่มข้อมูลประเภทห้องพัก</a>
+                <a href="cms_roomtypes_update.php" class="bi bi-pencil btn btn-secondary"> แก้ไขข้อมูลประเภทห้องพัก</a>
+                <a href="cms_roomtypes_delete.php" class="bi bi-trash btn btn-danger"> ลบข้อมูลประเภทห้องพัก</a>
             </div>
             <div class="d-flex justify-content-center mb-3">
                 <input class="form-control w-75 text-center" type="text" name="search" id="search" placeholder="ค้นหาข้อมูลประเภทห้องพัก">
             </div>
-            <div class="col-12 text-center">
+            <div class="col-12 text-center mb-4">
                 <input type="hidden" name="chk" id="chk" value="ค้นหา">
-                <button type="submit" class="btn btn-success">ค้นหา</button>
+                <button type="submit" class="bi bi-search btn btn-success"> ค้นหา</button>
             </div>
         </div>
     </form>
-</header>
 
 <?php
     include 'conn.php';
+
+    $limit = 10; // จำนวนแถวต่อหน้า
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    if($page < 1) $page = 1;
+    $offset = ($page - 1) * $limit;
+
     $sql = "SELECT * FROM roomtypes";
 
     $search = isset($_POST['search']) ? $_POST['search'] : '';
     if($search <> ''){
         $sql.= " WHERE type_name LIKE '%".$search."%'OR type_id LIKE '%".$search."%' OR price_per_night LIKE '%".$search."%'";
     }
-    $sql.= " ORDER BY type_id ASC";
+    $sql_count = $sql; // เอาไว้หาจำนวนทั้งหมด
+    $sql .= " ORDER BY type_id ASC LIMIT $limit OFFSET $offset";
 
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
-        echo "<table width='95%' border='0' align='center'>";
-        echo "<tr bgcolor='green'>";
-        echo "<td width='15%'><center>ประเภทห้องพัก</center></td>";
-        echo "<td width='50%'><center>คำอธิบายห้องพัก</center></td>";
-        echo "<td width='25%'><center>ราคาห้องพัก / คืน</center></td>";
-        echo "</tr>";
+        echo '<div class="table-responsive">';
+        echo '<table class="table table-striped table-hover align-middle table-users">';
+        echo '<thead class="table-success">';
+        echo '  <tr>';
+        echo '    <th>ประเภทห้องพัก</th>';
+        echo '    <th>คำอธิบายห้องพัก</th>';
+        echo '    <th>ราคาห้องพัก</th>';
+        echo '  </tr>';
+        echo '</thead>';
+        echo '<tbody>';
 
     while($result_array = $result->fetch_assoc()) {
         echo "<tr>";
@@ -73,10 +83,32 @@
         echo "<td><center>".$result_array['price_per_night']."</center></td>";
         echo  "</tr>";
     }
-        echo "</table>";
-    }else{
-        echo "<center>ไม่พบข้อมูล</center>";
-    }
+        echo '</tbody>';
+        echo '</table>';
+        echo '</div>';
+
+        // ---- นับจำนวนหน้า ----
+        $result_count = $conn->query($sql_count);
+        $total_records = $result_count->num_rows;
+        $total_pages = ceil($total_records / $limit);
+
+        // ---- แสดงลิงก์แบ่งหน้า ----
+        echo '<div class="container mt-auto">';
+        echo '<nav aria-label="Page navigation">';
+        echo '<ul class="pagination justify-content-center">';
+
+        for ($i = 1; $i <= $total_pages; $i++) {
+            $active = ($i == $page) ? ' active' : '';
+            echo '<li class="page-item'.$active.'"><a class="page-link" href="?page='.$i.'">'.$i.'</a></li>';
+        }
+
+        echo '</ul>';
+        echo '</nav>';
+        echo '</div>';
+
+      } else {
+        echo '<p class="text-center text-muted my-5">ไม่พบข้อมูล</p>';
+      }
 
     $conn->close();
 ?>

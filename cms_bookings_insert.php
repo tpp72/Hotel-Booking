@@ -9,12 +9,13 @@
   <title>CS Hotel :: เพิ่มข้อมูลการจองห้องพัก</title>
   <link rel="icon" type="image/png" href="./img/logo.png">
   <link rel="stylesheet" href="./css/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="cms.php">ADMIN</a>
+    <a class="bi bi-gear navbar-brand fw-bold" href="cms.php"> ADMIN</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
