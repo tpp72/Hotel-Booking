@@ -76,10 +76,10 @@
     while($result_array = $result->fetch_assoc()) {
         echo "<tr>";
         echo "<td><center>".$result_array['user_id']."</center></td>";
-        echo "<td>".$result_array['first_name']."</td>";
-        echo "<td>".$result_array['last_name']."</td>";
-        echo "<td>".$result_array['email']."</td>";
-        echo "<td>".$result_array['phone']."</td>";
+        echo "<td><center>".$result_array['first_name']."</center></td>";
+        echo "<td><center>".$result_array['last_name']."</center></td>";
+        echo "<td><center>".$result_array['email']."</center></td>";
+        echo "<td><center>".$result_array['phone']."</center></td>";
         echo "<td><center><a href='cms_users_update2.php?val=".md5($result_array['user_id'])."'target='_self' role='button' class='bi bi-pencil btn btn-secondary'></a></center></td>";
         echo  "</tr>";
     }
@@ -100,7 +100,7 @@
 
         for ($i = 1; $i <= $total_pages; $i++) {
             $active = ($i == $page) ? ' active' : '';
-            echo '<li class="page-item'.$active.'"><a class="page-link" href="?page='.$i.'">'.$i.'</a></li>';
+            echo '<li class="page-item'.$active.'"><a class="page-link" href="?page='.$i.'&search='.urlencode(isset($_GET['search']) ? $_GET['search'] : '').'">'.$i.'</a></li>';
         }
 
         echo '</ul>';

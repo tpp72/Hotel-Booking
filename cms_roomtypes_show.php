@@ -27,7 +27,7 @@
 </nav>
 
 <body class="d-flex flex-column min-vh-100">
-    <form method="post" action="">
+    <form method="GET" action="">
         <div class="container">
             <h2 class="text-center text-dark">จัดการข้อมูลประเภทห้องพัก</h2>
             <p class="text-center text-dark">กรุณาเลือกการดำเนินการที่ต้องการ</p>
@@ -56,7 +56,7 @@
 
     $sql = "SELECT * FROM roomtypes";
 
-    $search = isset($_POST['search']) ? $_POST['search'] : '';
+    $search = isset($_GET['search']) ? $_GET['search'] : '';
     if($search <> ''){
         $sql.= " WHERE type_name LIKE '%".$search."%'OR type_id LIKE '%".$search."%' OR price_per_night LIKE '%".$search."%'";
     }
@@ -99,7 +99,7 @@
 
         for ($i = 1; $i <= $total_pages; $i++) {
             $active = ($i == $page) ? ' active' : '';
-            echo '<li class="page-item'.$active.'"><a class="page-link" href="?page='.$i.'">'.$i.'</a></li>';
+            echo '<li class="page-item'.$active.'"><a class="page-link" href="?page='.$i.'&search='.urlencode(isset($_GET['search']) ? $_GET['search'] : '').'">'.$i.'</a></li>';
         }
 
         echo '</ul>';

@@ -52,7 +52,7 @@
 
     $search = isset($_GET['search']) ? $_GET['search'] : '';
     if($search <> ''){
-        $sql.= " WHERE user_id LIKE '%".$search."%'";
+        $sql.= " WHERE user_id LIKE '%".$search."%' OR first_name LIKE '%".$search."%' OR last_name LIKE '%".$search."%' OR email LIKE '%".$search."%' OR phone LIKE '%".$search."%'";
     }
     $sql_count = $sql; // เอาไว้หาจำนวนทั้งหมด
     $sql .= " ORDER BY user_id ASC LIMIT $limit OFFSET $offset";
@@ -76,10 +76,10 @@
     while($result_array = $result->fetch_assoc()) {
         echo "<tr>";
         echo "<td><center>".$result_array['user_id']."</center></td>";
-        echo "<td>".$result_array['first_name']."</td>";
-        echo "<td>".$result_array['last_name']."</td>";
-        echo "<td>".$result_array['email']."</td>";
-        echo "<td>".$result_array['phone']."</td>";
+        echo "<td><center>".$result_array['first_name']."</center></td>";
+        echo "<td><center>".$result_array['last_name']."</center></td>";
+        echo "<td><center>".$result_array['email']."</center></td>";
+        echo "<td><center>".$result_array['phone']."</center></td>";
         echo "<td><center><a href='cms_exec.php?val=".md5($result_array['user_id'])."&users_chk=delete' target='_self' onclick='return confirm(\"ยืนยันการลบข้อมูล\")' role='button' class='bi bi-trash btn btn-danger'></a></center></td>";
         echo  "</tr>";
     }
@@ -99,7 +99,7 @@
 
         for ($i = 1; $i <= $total_pages; $i++) {
             $active = ($i == $page) ? ' active' : '';
-            echo '<li class="page-item'.$active.'"><a class="page-link" href="?page='.$i.'">'.$i.'</a></li>';
+            echo '<li class="page-item'.$active.'"><a class="page-link" href="?page='.$i.'&search='.urlencode(isset($_GET['search']) ? $_GET['search'] : '').'">'.$i.'</a></li>';
         }
 
         echo '</ul>';

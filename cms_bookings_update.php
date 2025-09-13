@@ -53,7 +53,7 @@
     $sql.= " INNER JOIN roomtypes ON rooms.type_id = roomtypes.type_id";
     $sql.= " LEFT JOIN services ON bookings.service_id = services.service_id";
 
-    $search = isset($_POST['search']) ? $_POST['search'] : '';
+    $search = isset($_GET['search']) ? $_GET['search'] : '';
     if($search <> ''){
         $sql.= " WHERE booking_id LIKE '%".$search."%' OR user_id LIKE '%".$search."%' OR room_id LIKE '%".$search."%' OR check_in LIKE '%".$search."%' OR check_out LIKE '%".$search."%'";
     }
@@ -112,7 +112,7 @@
 
         for ($i = 1; $i <= $total_pages; $i++) {
             $active = ($i == $page) ? ' active' : '';
-            echo '<li class="page-item'.$active.'"><a class="page-link" href="?page='.$i.'">'.$i.'</a></li>';
+            echo '<li class="page-item'.$active.'"><a class="page-link" href="?page='.$i.'&search='.urlencode(isset($_GET['search']) ? $_GET['search'] : '').'">'.$i.'</a></li>';
         }
 
         echo '</ul>';
