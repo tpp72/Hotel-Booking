@@ -138,7 +138,6 @@
 
         // อัพเดทสถานะห้อง
         $conn->query("UPDATE rooms SET status='booked' WHERE room_id='$room_id'");
-        $conn->query("UPDATE bookings SET status='booked' WHERE booking_id='$booking_id'");
 
         echo "<br><center>จองห้องพักเรียบร้อย</center>";
         echo "<br><center>กรุณารอสักครู่...</center>";
