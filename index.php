@@ -26,8 +26,10 @@
         <li class="nav-item"><a class="nav-link" href="#rooms">Rooms</a></li>
         <li class="nav-item"><a class="nav-link" href="#booking">Booking</a></li>
         <li class="nav-item"><a class="nav-link" href="https://www.instagram.com/tpp_72/" target="_blank">Contact</a></li>
-        <?php if (isset($_SESSION['user_id'])): ?>
+        <?php if (isset($_SESSION['user_id']) && isset($_SESSION['first_name']) && $_SESSION['first_name'] === 'Admin'): ?>
           <li class="nav-item"><a class="nav-link" href="cms.php">Admin</a></li>
+          <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
+        <?php elseif (isset($_SESSION['user_id'])): ?>
           <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
         <?php else: ?>
           <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
@@ -174,7 +176,6 @@
         <input type="hidden" name="chk" id="chk" value="booking">
         <button type="submit" class="btn btn-success">จองห้องพัก</button>
       </div>
-
     </form>
   </div>
 </section>
