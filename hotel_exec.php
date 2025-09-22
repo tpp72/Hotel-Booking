@@ -38,6 +38,14 @@
         $password     = isset($_POST['password']) ? $_POST['password'] : '';
         $phone        = isset($_POST['phone']) ? $_POST['phone'] : '';
 
+    // 🔒 ป้องกันชื่อสงวน (Admin)
+    if (strtolower($first_name) === "admin") {
+        echo "<br><center><h3>ไม่สามารถสมัครสมาชิกชื่อ Admin ได้</h3></center>";
+        echo "<center><h3>กรุณาลองใหม่อีกครั้ง...</h3></center>";
+        echo "<meta http-equiv='refresh' content='2;url=register.php'>";
+    exit();
+    }
+
     $sql = "INSERT INTO users(first_name , last_name , email , password , phone)";
     $sql.= " VALUES('$first_name','$last_name','$email','$password','$phone')";
 

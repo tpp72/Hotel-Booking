@@ -13,6 +13,13 @@
         $password     = isset($_POST['password']) ? $_POST['password'] : '';
         $phone        = isset($_POST['phone']) ? $_POST['phone'] : '';
 
+    // 🔒 ป้องกันชื่อสงวน (Admin)
+    if (strtolower($first_name) === "admin") {
+        echo "<br><center><h3>ไม่สามารถเพิ่มข้อมูลใช้ชื่อ Admin ได้</h3></center>";
+        echo "<meta http-equiv='refresh' content='2;url=register.php'>";
+    exit();
+    }
+
     $sql = "INSERT INTO users(first_name , last_name , email , password , phone)";
     $sql.= " VALUES('$first_name','$last_name','$email','$password','$phone')";
 
@@ -55,6 +62,13 @@
         $email      = isset($_GET['email']) ? $_GET['email'] : '';
         $password   = isset($_GET['password']) ? $_GET['password'] : '';
         $phone      = isset($_GET['phone']) ? $_GET['phone'] : '';
+
+    // 🔒 ป้องกันชื่อสงวน (Admin)
+    if (strtolower($first_name) === "admin") {
+        echo "<br><center><h3>ไม่สามารถแก้ไขชื่อเป็น Admin ได้</h3></center>";
+        echo "<meta http-equiv='refresh' content='2;url=register.php'>";
+    exit();
+    }
 
         $sql = "UPDATE users SET first_name = '$first_name', last_name = '$last_name', email = '$email', password = '$password', phone = '$phone'";
         $sql.= " WHERE user_id = '$user_id'";
