@@ -21,7 +21,7 @@
             LIMIT 1";
   } else {
       echo "<div class='container mt-4'><div class='alert alert-danger'>ไม่พบพารามิเตอร์อ้างอิงห้อง</div></div>";
-      exit;
+    exit;
   }
 
   $rs = $conn->query($q);
@@ -33,13 +33,11 @@
       $status_current      = $row['status'];
   } else {
       echo "<div class='container mt-4'><div class='alert alert-danger'>ไม่พบข้อมูลห้องพัก</div></div>";
-      exit;
+    exit;
   }
 
   // type_id ที่เลือกมาทาง GET (ตอนกดปุ่มยืนยันประเภท)
-  $selected_type_id = (isset($_GET['type_id']) && $_GET['type_id'] !== '')
-                      ? $_GET['type_id']
-                      : $type_id_current;
+  $selected_type_id = (isset($_GET['type_id']) && $_GET['type_id'] !== '') ? $_GET['type_id'] : $type_id_current;
 
   // ถ้าเลือก type ใหม่ → คำนวณหมายเลขห้องแนะนำ แล้วโชว์แทนเลขเดิม
   $suggested_room_number = '';
