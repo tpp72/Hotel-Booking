@@ -23,6 +23,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="gallery.php">Gallery</a></li>
         <li class="nav-item"><a class="nav-link" href="#rooms">Rooms</a></li>
         <li class="nav-item"><a class="nav-link" href="#booking">Booking</a></li>
         <li class="nav-item"><a class="nav-link" href="https://www.instagram.com/tpp_72/" target="_blank">Contact</a></li>
